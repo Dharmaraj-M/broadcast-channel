@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,6 +9,17 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'broadcast-channel';
+export class AppComponent implements OnInit {
+  triggerChannel = new BroadcastChannel('session');
+  listenerChannel = new BroadcastChannel('session');
+
+  ngOnInit(): void {
+    this.listenerChannel.addEventListener('message', (event) =>
+      console.log(event.data)
+    );
+  }
+
+  trigger(): void {
+    this.triggerChannel.postMessage('trigger');
+  }
 }
